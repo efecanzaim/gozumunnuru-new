@@ -157,7 +157,7 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
           {/* Left - Han Logo */}
           <div className="hidden lg:flex items-center w-[200px]">
             <Image
-              src="/images/han-logo.svg"
+              src={getAssetPath("/images/han-logo.svg")}
               alt="Han Logo"
               width={60}
               height={28}
@@ -173,7 +173,7 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
             
             <Link href="/" className="block">
               <Image
-                src="/images/logo.svg"
+                src={getAssetPath("/images/logo.svg")}
                 alt={logoAlt}
                 width={280}
                 height={55}
@@ -189,7 +189,7 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
           {/* Right - 1818 Logo */}
           <div className="hidden lg:flex items-center w-[200px] justify-end">
             <Image
-              src="/images/1818-logo.svg"
+              src={getAssetPath("/images/1818-logo.svg")}
               alt="1818 Logo"
               width={44}
               height={28}

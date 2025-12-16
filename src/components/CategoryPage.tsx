@@ -62,7 +62,7 @@ export default function CategoryPage({
             {/* Left Image */}
             <div className="w-[590px] h-[609px] relative">
               <Image
-                src={heroImage1}
+                src={getAssetPath(heroImage1)}
                 alt={heroTitle}
                 fill
                 className="object-cover"
@@ -71,7 +71,7 @@ export default function CategoryPage({
             {/* Right Image - 80px higher than left */}
             <div className="w-[590px] h-[865px] relative -mt-[80px]">
               <Image
-                src={heroImage2}
+                src={getAssetPath(heroImage2)}
                 alt={heroTitle}
                 fill
                 className="object-cover"
@@ -106,7 +106,7 @@ export default function CategoryPage({
             {/* Left Image - square */}
             <div className="w-[590px] h-[590px] relative">
               <Image
-                src={sectionImage1}
+                src={getAssetPath(sectionImage1)}
                 alt={sectionTitle}
                 fill
                 className="object-cover"
@@ -115,7 +115,7 @@ export default function CategoryPage({
             {/* Right Image - portrait */}
             <div className="w-[470px] h-[600px] relative mt-[70px]">
               <Image
-                src={sectionImage2}
+                src={getAssetPath(sectionImage2)}
                 alt={sectionTitle}
                 fill
                 className="object-cover"

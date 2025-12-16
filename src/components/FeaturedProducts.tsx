@@ -34,7 +34,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
           <div className="w-[710px] h-[590px] relative bg-gray-100 shrink-0">
             <div
               className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(/images/products/featured-large-1.jpg)` }}
+              style={{ backgroundImage: `url(${getAssetPath('/images/products/featured-large-1.jpg')})` }}
             />
           </div>
 

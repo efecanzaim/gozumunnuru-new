@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getAssetPath } from "@/utils/paths";
 
 interface StorySectionProps {
   title: string;
@@ -172,7 +173,7 @@ export default function StorySection({ title, mainText, subText, linkText, linkH
     {/* Wave Separator at bottom - outside section to overflow to next section */}
     <div className="relative -mt-[133px] flex justify-center pointer-events-none z-50">
       <img
-        src="/images/dalga.svg"
+        src={getAssetPath("/images/dalga.svg")}
         alt=""
         width="950"
         height="267"
