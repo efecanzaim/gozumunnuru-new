@@ -1,0 +1,161 @@
+{
+  "topBanner": {
+    "text": "Stoklar tükenene kadar çevrimiçi teslimat siparişlerinde özel tatil ambalajlarımızı kaçırmayın",
+    "visible": true
+  },
+  "header": {
+    "logo": "/images/logo.png",
+    "logoAlt": "Gözümün Nuru",
+    "topLinks": [
+      { "text": "Sipariş Takip", "href": "/siparis-takip" },
+      { "text": "Hakkımızda", "href": "/hakkimizda" },
+      { "text": "Blog", "href": "/blog" }
+    ],
+    "mainNav": [
+      { "text": "MÜCEVHER", "href": "/mucevher" },
+      { "text": "KOLEKSİYON", "href": "/koleksiyon" },
+      { "text": "ÖZEL TASARIM", "href": "/ozel-tasarim" },
+      { "text": "HEDİYE", "href": "/hediye" },
+      { "text": "YATIRIM", "href": "/yatirim" }
+    ]
+  },
+  "hero": {
+    "slides": [
+      {
+        "backgroundImage": "/images/hero-bg.jpg",
+        "title": "en  zarif  ton",
+        "subtitle": "HER PIRLANTADA AŞKIN ZARAFETİNİ TAŞIR",
+        "ctaText": "PIRLANTA KOLYELER",
+        "ctaLink": "/koleksiyon/pirlanta-kolyeler"
+      },
+      {
+        "backgroundImage": "/images/hero-bg2.mp4",
+        "title": "sonsuz masal",
+        "subtitle": "ZARAFET VE IŞILTI BİR ARADA",
+        "ctaText": "KOLEKSİYONU KEŞFET",
+        "ctaLink": "/koleksiyon"
+      },
+      {
+        "backgroundImage": "/images/hero-bg3.jpg",
+        "title": "ebedi  sevda",
+        "subtitle": "HER ANDA YANINDA PARLAYAN IŞIK",
+        "ctaText": "YENİ GELENLER",
+        "ctaLink": "/koleksiyon/yeni-gelenler"
+      },
+      {
+        "backgroundImage": "/images/hero-bg4.mp4",
+        "title": "nadide  sanat",
+        "subtitle": "SADECE SİZE ÖZEL PRLANTA TASARIMLAR",
+        "ctaText": "ÖZEL TASARIM",
+        "ctaLink": "/ozel-tasarim"
+      }
+    ]
+  },
+  "trendSection": {
+    "leftImage": "/images/trend-left.jpg",
+    "rightImage": "/images/trend-right.jpg",
+    "leftTitle": "yeni trend",
+    "rightTitle": "senin\nhikayen",
+    "leftCategory": "PIRLANTA SETLER",
+    "rightCategory": "PIRLANTA BİLEKLİK",
+    "leftLink": "/koleksiyon/pirlanta-setler",
+    "rightLink": "/koleksiyon/pirlanta-bileklik"
+  },
+  "parallaxSection": {
+    "backgroundImage": "/images/parallax-bg.jpg"
+  },
+  "storySection": {
+    "title": "zarafetiyle bir hikâye",
+    "mainText": "Gözümün Nuru, bir pırlantadan çok daha fazlasını temsil eder; değer verilen kişiyi, paylaşılan özel anları ve kalpten gelen duyguları ışığa dönüştüren bir semboldür.",
+    "subText": "Gözümün Nuru, ışığın içinden doğan bu anlamı taşıyarak her kadının kalbinde özel bir yer bırakır; çünkü her ışıltının ardında unutulmaz bir hikâye vardır.",
+    "linkText": "Işığın Aşka Dönüştüğü Hikâye",
+    "linkHref": "/hikaye"
+  },
+  "featuredProducts": [
+    {
+      "id": 1,
+      "image": "/images/products/product-1.jpg",
+      "name": "Harmony Pırlanta Yüzük 0,55 Karat",
+      "category": "PIRLANTA YÜZÜK",
+      "link": "/urun/harmony-pirlanta-yuzuk"
+    },
+    {
+      "id": 2,
+      "image": "/images/products/product-2.jpg",
+      "name": "Su Yolu Bileklik 1,00 Karat Pırlanta",
+      "category": "PIRLANTA BİLEKLİK",
+      "link": "/urun/su-yolu-bileklik"
+    },
+    {
+      "id": 3,
+      "image": "/images/products/product-3.jpg",
+      "name": "Yakamoz Pırlanta Bileklik 0,10 Karat",
+      "category": "PIRLANTA BİLEKLİK",
+      "link": "/urun/yakamoz-bileklik"
+    },
+    {
+      "id": 4,
+      "image": "/images/products/product-4.jpg",
+      "name": "Baget Pırlanta Bileklik 0,31 Karat",
+      "category": "PIRLANTA BİLEKLİK",
+      "link": "/urun/baget-bileklik"
+    }
+  ],
+  "categoryCards": [
+    {
+      "id": 1,
+      "image": "/images/categories/mucevher.jpg",
+      "title": "MÜCEVHER",
+      "link": "/mucevher"
+    },
+    {
+      "id": 2,
+      "image": "/images/categories/koleksiyon.jpg",
+      "title": "KOLEKSİYONLAR",
+      "link": "/koleksiyon"
+    },
+    {
+      "id": 3,
+      "image": "/images/categories/ozel-tasarim.jpg",
+      "title": "ÖZEL TASARIM",
+      "link": "/ozel-tasarim"
+    }
+  ],
+  "promoSections": [
+    {
+      "id": 1,
+      "image": "/images/promo/goz-alici.jpg",
+      "title": "GÖZ ALICI TAKILAR",
+      "description": "Yeni sezon pırlanta\ntasarımları ile stilini aydınlat.",
+      "ctaText": "ÜRÜNLERİ İNCELE",
+      "link": "/koleksiyon/goz-alici-takilar"
+    },
+    {
+      "id": 2,
+      "image": "/images/promo/yeni-gelenler.jpg",
+      "title": "YENİ GELENLER",
+      "description": "Atölyemizden çıkan en yeni\ntasarımları ilk sen keşfet.",
+      "ctaText": "ÜRÜNLERİ İNCELE",
+      "link": "/koleksiyon/yeni-gelenler"
+    }
+  ],
+  "investmentSection": {
+    "title": "BUGÜNDEN\nYARINLARA\nGÜVENLE",
+    "image": "/images/investment.jpg",
+    "description": "Kalitesi sertifikalı yatırımlık altın ürünleriyle geleceğinizi güvenle şekillendirin. Her gram, istikrarlı bir adım demektir.",
+    "ctaText": "YATIRIMLIK ÜRÜNLER",
+    "link": "/yatirim"
+  },
+  "footer": {
+    "logo": "/images/1818-logo.svg",
+    "slogan": "Işıltının Anlama Dönüştüğü Yer.",
+    "nav": [
+      { "text": "MÜCEVHER", "href": "/mucevher" },
+      { "text": "KOLEKSİYON", "href": "/koleksiyon" },
+      { "text": "ÖZEL TASARIM", "href": "/ozel-tasarim" },
+      { "text": "HEDİYE", "href": "/hediye" },
+      { "text": "YATIRIM", "href": "/yatirim" }
+    ],
+    "copyright": "© 2025 Gözümün Nuru, Tüm Hakları Saklıdır"
+  }
+}
