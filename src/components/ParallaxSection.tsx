@@ -8,9 +8,9 @@ interface ParallaxSectionProps {
 
 export default function ParallaxSection({ backgroundImage }: ParallaxSectionProps) {
   return (
-    <section className="relative h-[800px] overflow-hidden">
+    <section className="relative h-[204px] md:h-[800px] overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
+        className="absolute inset-0 bg-cover bg-center md:bg-fixed"
         style={{ backgroundImage: `url(${getAssetPath(backgroundImage)})` }}
       />
     </section>

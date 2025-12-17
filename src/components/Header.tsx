@@ -136,7 +136,7 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
 
   // Memoized style calculations
   const isMenuOpen = activeMenu !== null;
-  const showWhiteHeader = isMenuOpen || !isHero;
+  const showWhiteHeader = isMenuOpen || !isHero || mobileMenuOpen;
 
   const headerStyles = useMemo(() => ({
     textColor: showWhiteHeader ? "text-[#2f3237]" : "text-white",
@@ -148,65 +148,77 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
 
   return (
     <header 
-      className={`absolute top-[41px] left-0 right-0 z-50 transition-all duration-200 ease-out ${headerStyles.headerBg}`}
+      className={`absolute top-0 lg:top-[41px] left-0 right-0 z-50 transition-all duration-200 ease-out ${showWhiteHeader ? 'bg-white lg:bg-white' : 'bg-transparent lg:bg-transparent'}`}
     >
       {/* Main Header */}
-      <div className="container mx-auto px-8">
+      <div className={`container mx-auto px-6 lg:px-8 ${mobileMenuOpen ? 'lg:block hidden' : ''}`}>
         {/* Top row with logos - closes menu on hover */}
         <div className="flex items-center justify-between py-4" onMouseEnter={closeMenu}>
-          {/* Left - Han Logo */}
-          <div className="hidden lg:flex items-center w-[200px]">
+          {/* Left Section - Hamburger (Mobile) / Han Logo (Desktop) */}
+          <div className="flex items-center w-[50px] lg:w-[200px]">
+            {/* Mobile Menu Button - 30x19 hamburger - LEFT SIDE */}
+            <button
+              className={`lg:hidden transition-colors duration-200 ${showWhiteHeader ? 'text-[#2f3237]' : 'text-white'}`}
+              onClick={toggleMobileMenu}
+            >
+              <svg className="w-[30px] h-[19px]" fill="none" stroke="currentColor" viewBox="0 0 30 19">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M0 1h30M0 9.5h30M0 18h30" />
+              </svg>
+            </button>
+            
+            {/* Han Logo - Desktop only */}
             <Image
               src={getAssetPath("/images/han-logo.svg")}
               alt="Han Logo"
               width={60}
               height={28}
-              className="h-7 w-auto transition-[filter] duration-200 ease-out"
+              className="hidden lg:block h-7 w-auto transition-[filter] duration-200 ease-out"
               style={headerStyles.logoFilter}
             />
           </div>
 
           {/* Center - Logo with side lines */}
-          <div className="flex-1 flex items-center justify-center gap-6">
-            {/* Left Line */}
+          <div className="flex-1 flex items-center justify-center lg:gap-6">
+            {/* Left Line (Desktop only) */}
             <div className={`hidden lg:block flex-1 h-px transition-colors duration-200 ease-out ${headerStyles.lineColor}`} />
             
-            <Link href="/" className="block">
+            <Link href="/" className="block lg:mt-0 mt-1">
+              {/* Mobile Logo - 190x37 */}
+              <Image
+                src={getAssetPath("/images/logo.svg")}
+                alt={logoAlt}
+                width={190}
+                height={37}
+                priority={isHero}
+                className={`lg:hidden h-[37px] w-[190px] transition-[filter] duration-200 ease-out ${showWhiteHeader ? 'invert' : ''}`}
+              />
+              {/* Desktop Logo - 280x55 */}
               <Image
                 src={getAssetPath("/images/logo.svg")}
                 alt={logoAlt}
                 width={280}
                 height={55}
                 priority={isHero}
-                className={`h-[55px] w-auto transition-[filter] duration-200 ease-out ${headerStyles.mainLogoClass}`}
+                className={`hidden lg:block h-[55px] w-auto transition-[filter] duration-200 ease-out ${headerStyles.mainLogoClass}`}
               />
             </Link>
             
-            {/* Right Line */}
+            {/* Right Line (Desktop only) */}
             <div className={`hidden lg:block flex-1 h-px transition-colors duration-200 ease-out ${headerStyles.lineColor}`} />
           </div>
 
-          {/* Right - 1818 Logo */}
-          <div className="hidden lg:flex items-center w-[200px] justify-end">
+          {/* Right Section - 1818 Logo */}
+          <div className="flex items-center w-[50px] lg:w-[200px] justify-end">
+            {/* 1818 Logo - Both Mobile & Desktop */}
             <Image
               src={getAssetPath("/images/1818-logo.svg")}
               alt="1818 Logo"
               width={44}
               height={28}
-              className="h-7 w-auto transition-[filter] duration-200 ease-out"
-              style={headerStyles.logoFilter}
+              className={`h-7 w-auto transition-[filter] duration-200 ease-out`}
+              style={showWhiteHeader ? headerStyles.logoFilter : {}}
             />
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className={`lg:hidden transition-colors duration-200 ${headerStyles.textColor}`}
-            onClick={toggleMobileMenu}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
         </div>
 
         {/* Main Navigation Row - outer area closes menu */}
@@ -300,39 +312,139 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Full Screen */}
       <div 
-        className={`lg:hidden bg-white absolute top-full left-0 right-0 shadow-lg transition-all duration-200 ease-out ${
+        className={`lg:hidden fixed inset-0 bg-white z-100 transition-all duration-300 ease-out ${
           mobileMenuOpen 
-            ? 'opacity-100 visible translate-y-0' 
-            : 'opacity-0 invisible -translate-y-2 pointer-events-none'
+            ? 'opacity-100 visible' 
+            : 'opacity-0 invisible pointer-events-none'
         }`}
       >
-        <nav className="container mx-auto px-8 py-4">
-          {mainNav.map((item, index) => (
-            <div key={index}>
-              <Link
-                href={item.href}
-                className="block py-3 text-[13px] font-medium text-[#2f3237] border-b border-gray-100"
-              >
-                {item.text}
-              </Link>
-              {megaMenuData[item.text] && (
-                <div className="pl-4 bg-gray-50">
-                  {megaMenuData[item.text].items.map((subItem, idx) => (
-                    <Link
-                      key={idx}
-                      href={subItem.href}
-                      className="block py-2 text-[12px] font-light text-[#2f3237]"
+        {/* Mobile Menu Header */}
+        <div className="flex items-center px-6 pt-4 pb-4">
+          {/* Close Button (X) - Left */}
+          <div className="w-[50px] flex items-center">
+            <button
+              className="text-[#2f3237]"
+              onClick={toggleMobileMenu}
+            >
+              <svg className="w-[30px] h-[19px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          {/* Logo - Center */}
+          <div className="flex-1 flex items-center justify-center">
+            <Link href="/" className="block mt-1" onClick={() => setMobileMenuOpen(false)}>
+              <Image
+                src={getAssetPath("/images/logo.svg")}
+                alt={logoAlt}
+                width={190}
+                height={37}
+                className="h-[37px] w-[190px] invert"
+              />
+            </Link>
+          </div>
+          
+          {/* 1818 Logo - Right */}
+          <div className="w-[50px] flex items-center justify-end">
+            <Image
+              src={getAssetPath("/images/1818-logo.svg")}
+              alt="1818 Logo"
+              width={44}
+              height={28}
+              className="h-7 w-auto"
+              style={{ filter: primaryColorFilter }}
+            />
+          </div>
+        </div>
+
+        {/* Menu Content */}
+        <div className="flex flex-col items-center px-6 pt-8 pb-20 h-[calc(100vh-80px)] overflow-y-auto">
+          {/* Categories */}
+          <nav className="w-full text-center">
+            {mainNav.map((item, index) => {
+              const isOpen = activeMenu === item.text;
+              const hasSubmenu = megaMenuData[item.text];
+              
+              return (
+              <div key={index} className="mb-2">
+                <div className="flex items-center justify-center gap-2">
+                  <Link
+                    href={item.href}
+                    className={`text-[20px] font-medium text-[#2f3237] py-2 ${
+                      isOpen ? 'font-bold' : ''
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.text}
+                  </Link>
+                  {hasSubmenu && (
+                    <button
+                      className="p-2 -ml-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveMenu(isOpen ? null : item.text);
+                      }}
                     >
-                      {subItem.text}
-                    </Link>
-                  ))}
+                      <svg 
+                        className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
-              )}
+                
+                {/* Submenu - Expanded */}
+                {hasSubmenu && isOpen && (
+                  <div className="mt-4 mb-6">
+                    {megaMenuData[item.text].items.map((subItem, idx) => (
+                      <Link
+                        key={idx}
+                        href={subItem.href}
+                        className="block py-[6px] text-[15px] font-light text-[#2f3237]"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {subItem.text}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+            })}
+          </nav>
+
+          {/* Bottom Links */}
+          <div className="mt-auto text-center">
+            <Link href="/siparis-takip" className="block py-3 text-[15px] font-medium text-[#2f3237]" onClick={() => setMobileMenuOpen(false)}>
+              Sipariş Takip
+            </Link>
+            <Link href="/hakkimizda" className="block py-3 text-[15px] font-medium text-[#2f3237]" onClick={() => setMobileMenuOpen(false)}>
+              Hakkımızda
+            </Link>
+            <Link href="/blog" className="block py-3 text-[15px] font-medium text-[#2f3237]" onClick={() => setMobileMenuOpen(false)}>
+              Blog
+            </Link>
+            
+            {/* Han Logo at bottom */}
+            <div className="mt-10">
+              <Image
+                src={getAssetPath("/images/han-logo.svg")}
+                alt="Han Logo"
+                width={60}
+                height={28}
+                className="h-7 w-auto mx-auto"
+                style={{ filter: primaryColorFilter }}
+              />
             </div>
-          ))}
-        </nav>
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -58,7 +58,7 @@ export default function Footer({ logo, slogan, nav, copyright }: FooterProps) {
       {/* Footer */}
       <footer className="relative bg-primary overflow-visible">
         {/* Diamond Pattern Background - Slightly overflowing upwards */}
-        <div className="absolute -top-[26px] left-0 w-full h-[430px] pointer-events-none z-50 overflow-hidden">
+        <div className="absolute -top-[26px] left-0 w-full h-[430px] pointer-events-none z-0 overflow-hidden">
           <svg
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[3000px] h-[430px]"
             viewBox="0 0 3000 430"
@@ -86,16 +86,16 @@ export default function Footer({ logo, slogan, nav, copyright }: FooterProps) {
           </svg>
         </div>
 
-        <div className="relative z-10 pt-[420px] pb-[40px]">
+        <div className="relative z-10 pt-[200px] md:pt-[420px] pb-[40px] px-6 md:px-0">
         {/* Slogan */}
           <div className="text-center">
-            <p className="text-[25px] leading-[25px] font-light text-[#2f3237] tracking-[0.5em]">
+            <p className="text-[20px] leading-[30px] md:text-[25px] md:leading-[25px] font-light text-[#2f3237] tracking-[0.3em] md:tracking-[0.5em] whitespace-pre-line">
             {slogan}
           </p>
         </div>
 
-        {/* Navigation */}
-          <nav className="flex flex-wrap justify-center gap-[32px] mt-[105px]">
+        {/* Navigation - Vertical on mobile, Horizontal on desktop */}
+          <nav className="flex flex-col md:flex-row items-center justify-center gap-[25px] md:gap-[32px] mt-[60px] md:mt-[105px]">
           {nav.map((item, index) => (
             <Link
               key={index}
@@ -108,7 +108,7 @@ export default function Footer({ logo, slogan, nav, copyright }: FooterProps) {
         </nav>
 
         {/* Copyright */}
-          <div className="text-center mt-[56px]">
+          <div className="text-center mt-[40px] md:mt-[56px]">
             <p className="text-[10px] leading-[12px] font-medium text-[#2f3237]">
             {copyright}
           </p>

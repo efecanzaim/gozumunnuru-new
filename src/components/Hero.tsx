@@ -75,22 +75,22 @@ export default function Hero({ slides }: HeroProps) {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className="absolute inset-0 flex flex-col items-center justify-center pt-32"
+            className="absolute inset-0 flex flex-col items-center justify-center pt-16 md:pt-32 px-6 md:px-4"
             style={{
               opacity: index === currentSlide ? 1 : 0,
               transition: "opacity 1.5s ease-in-out",
               pointerEvents: index === currentSlide ? "auto" : "none",
             }}
           >
-            <h1 className="font-display text-5xl md:text-7xl text-center mb-6 tracking-wide">
+            <h1 className="font-display text-[70px] leading-[100px] md:text-7xl text-center mb-4 md:mb-6 tracking-wide whitespace-pre-line">
               {slide.title}
             </h1>
-            <p className="text-lg md:text-xl font-light tracking-wide mb-8 text-center max-w-2xl px-4">
+            <p className="text-[20px] leading-[30px] md:text-xl font-light tracking-wide mb-6 md:mb-8 text-center max-w-[244px] md:max-w-2xl">
               {slide.subtitle}
             </p>
             <Link
               href={slide.ctaLink}
-              className="border border-white px-10 py-4 text-[15px] font-light tracking-wide hover:bg-white hover:text-[#2f3237] transition-colors duration-300"
+              className="border border-white w-[250px] md:w-auto px-10 py-4 text-[15px] font-light tracking-wide hover:bg-white hover:text-[#2f3237] transition-colors duration-300 text-center"
             >
               {slide.ctaText}
             </Link>

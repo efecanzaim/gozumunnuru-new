@@ -18,29 +18,28 @@ interface PromoSectionsProps {
 
 export default function PromoSections({ sections }: PromoSectionsProps) {
   return (
-    <section className="pt-[80px] pb-30 bg-white">
-      <div className="max-w-[1430px] mx-auto px-4">
-        <div className="flex gap-[10px] justify-center">
+    <section className="pt-[40px] md:pt-[80px] pb-10 md:pb-30 bg-white">
+      <div className="max-w-[1430px] mx-auto px-6 md:px-4">
+        {/* Mobile: Stacked vertically */}
+        <div className="flex flex-col md:flex-row gap-10 md:gap-[10px] justify-center">
           {sections.map((section, index) => {
-            // Figma'da ikinci bölüm 100px yukarıda
-            const yOffset = index === 1 ? -100 : 0;
             return (
               <div 
                 key={section.id} 
-                className="flex flex-col"
-                style={{ marginTop: `${yOffset}px` }}
+                className={`flex flex-col ${index === 1 ? 'md:-mt-[100px]' : ''}`}
               >
-                <div className="w-[590px] h-[590px] relative bg-gray-100 overflow-hidden mb-[50px]">
+                {/* Mobile: 390x390, Desktop: 590x590 */}
+                <div className="w-full md:w-[590px] aspect-square md:aspect-auto md:h-[590px] relative bg-gray-100 overflow-hidden mb-[30px] md:mb-[50px]">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${getAssetPath(section.image)})` }}
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="text-[20px] leading-[30px] font-bold text-[#2f3237] mb-[30px]">
+                  <h3 className="text-[20px] leading-[30px] font-bold text-[#2f3237] mb-[20px] md:mb-[30px]">
                     {section.title}
                   </h3>
-                  <p className="text-[25px] leading-[30px] font-light text-[#2f3237] mb-[50px] whitespace-pre-line">
+                  <p className="text-[25px] leading-[30px] font-light text-[#2f3237] mb-[30px] md:mb-[50px] whitespace-pre-line max-w-[325px] md:max-w-none mx-auto">
                     {section.description}
                   </p>
                   <div className="flex justify-center">

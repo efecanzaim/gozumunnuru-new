@@ -35,32 +35,32 @@ export default function CategoryPage({
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section - Extended to cover part of images */}
-      <section className="pt-[280px] pb-0 bg-primary">
-        <div className="container mx-auto px-8">
+      <section className="pt-[100px] md:pt-[280px] pb-0 bg-primary">
+        <div className="container mx-auto px-6 md:px-8">
           {/* Titles */}
           <div className="max-w-[800px] mx-auto mb-[20px]">
-            <h1 className="text-[80px] leading-[90px] font-bold text-[#2f3237] mb-0 text-left">
+            <h1 className="text-[40px] leading-[50px] md:text-[80px] md:leading-[90px] font-bold text-[#2f3237] mb-0 text-left">
               {heroTitle}
             </h1>
-            <h2 className="text-[120px] leading-[110px] font-light text-[#2f3237] text-right">
+            <h2 className="text-[50px] leading-[60px] md:text-[120px] md:leading-[110px] font-light text-[#2f3237] text-right md:text-right">
               {heroSubtitle}
             </h2>
           </div>
 
           {/* Description */}
-          <div className="text-center max-w-[950px] mx-auto mb-[160px]">
-            <p className="text-[30px] leading-[40px] font-light text-[#2f3237] mb-[10px]">
+          <div className="text-center max-w-[950px] mx-auto mb-[40px] md:mb-[160px]">
+            <p className="text-[20px] leading-[30px] md:text-[30px] md:leading-[40px] font-light text-[#2f3237] mb-[10px] max-w-[390px] md:max-w-none mx-auto">
               {heroDescription}
             </p>
-            <p className="text-[15px] leading-[20px] font-light text-[#2f3237] max-w-[710px] mx-auto">
+            <p className="text-[15px] leading-[20px] font-light text-[#2f3237] max-w-[388px] md:max-w-[710px] mx-auto">
               {heroSubDescription}
             </p>
           </div>
 
-          {/* Images - Inside hero, bottom part overflows */}
-          <div className="flex justify-center gap-[130px] -mb-[600px]">
+          {/* Images - Mobile: stacked, Desktop: side by side */}
+          <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-[130px] -mb-[200px] md:-mb-[600px]">
             {/* Left Image */}
-            <div className="w-[590px] h-[609px] relative">
+            <div className="w-full md:w-[590px] aspect-390/403 md:h-[609px] relative">
               <Image
                 src={getAssetPath(heroImage1)}
                 alt={heroTitle}
@@ -68,8 +68,8 @@ export default function CategoryPage({
                 className="object-cover"
               />
             </div>
-            {/* Right Image - 80px higher than left */}
-            <div className="w-[590px] h-[865px] relative -mt-[80px]">
+            {/* Right Image - Mobile: normal, Desktop: 80px higher */}
+            <div className="w-full md:w-[590px] aspect-390/582 md:h-[865px] relative md:-mt-[80px]">
               <Image
                 src={getAssetPath(heroImage2)}
                 alt={heroTitle}
@@ -82,29 +82,29 @@ export default function CategoryPage({
       </section>
 
       {/* Category Section */}
-      <section className="pt-[700px] pb-[100px] bg-white">
-        <div className="container mx-auto px-8">
+      <section className="pt-[300px] md:pt-[700px] pb-[60px] md:pb-[100px] bg-white">
+        <div className="container mx-auto px-6 md:px-8">
           {/* Section Title */}
-          <div className="text-center mb-[40px]">
+          <div className="text-center mb-[30px] md:mb-[40px]">
             <h3 className="text-[40px] leading-[80px] font-display text-[#2f3237]">
               {sectionTitle}
             </h3>
           </div>
 
           {/* Section Description */}
-          <div className="text-center max-w-[950px] mx-auto mb-[80px]">
-            <p className="text-[30px] leading-[40px] font-light text-[#2f3237] mb-[20px]">
+          <div className="text-center max-w-[950px] mx-auto mb-[40px] md:mb-[80px]">
+            <p className="text-[20px] leading-[30px] md:text-[30px] md:leading-[40px] font-light text-[#2f3237] mb-[20px] max-w-[390px] md:max-w-none mx-auto">
               {sectionDescription}
             </p>
-            <p className="text-[15px] leading-[20px] font-light text-[#2f3237] max-w-[710px] mx-auto">
+            <p className="text-[15px] leading-[20px] font-light text-[#2f3237] max-w-[388px] md:max-w-[710px] mx-auto">
               {sectionSubDescription}
             </p>
           </div>
 
-          {/* Section Images */}
-          <div className="flex justify-center gap-[130px]">
+          {/* Section Images - Mobile: stacked, Desktop: side by side */}
+          <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-[130px]">
             {/* Left Image - square */}
-            <div className="w-[590px] h-[590px] relative">
+            <div className="w-full md:w-[590px] aspect-square md:h-[590px] relative">
               <Image
                 src={getAssetPath(sectionImage1)}
                 alt={sectionTitle}
@@ -113,7 +113,7 @@ export default function CategoryPage({
               />
             </div>
             {/* Right Image - portrait */}
-            <div className="w-[470px] h-[600px] relative mt-[70px]">
+            <div className="w-full md:w-[470px] aspect-390/498 md:h-[600px] relative md:mt-[70px]">
               <Image
                 src={getAssetPath(sectionImage2)}
                 alt={sectionTitle}

@@ -25,12 +25,12 @@ export default function TrendSection({
   rightLink
 }: TrendSectionProps) {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[710px_350px] gap-[130px] items-start justify-center">
-          {/* Left Side - Large Image (710x733) */}
+    <section className="py-10 md:py-20 bg-white">
+      <div className="container mx-auto px-6 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[710px_350px] gap-10 md:gap-[130px] items-start justify-center">
+          {/* Left Side - Large Image (390x403 mobile, 710x733 desktop) */}
           <div className="relative">
-            <div className="aspect-[710/733] relative bg-gray-100 overflow-hidden">
+            <div className="aspect-390/403 md:aspect-710/733 relative bg-gray-100 overflow-hidden">
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${getAssetPath(leftImage)})` }}
@@ -38,7 +38,7 @@ export default function TrendSection({
             </div>
             {/* Title overlapping image */}
             <div className="relative z-10 -mt-[-15px] text-center">
-              <h2 className="font-display text-[80px] leading-[80px] text-[#dccdbf]">
+              <h2 className="font-display text-[40px] leading-[80px] md:text-[80px] md:leading-[80px] text-primary">
                 {leftTitle}
               </h2>
             </div>
@@ -56,9 +56,9 @@ export default function TrendSection({
             </div>
           </div>
 
-          {/* Right Side - Smaller Image (350x522) - pushed down 211px to align bottom with left image */}
-          <div className="relative w-[350px] lg:mt-[211px]">
-            <div className="aspect-[350/522] relative bg-gray-100 overflow-hidden">
+          {/* Right Side - Image (390x582 mobile, 350x522 desktop) - pushed down 211px on desktop */}
+          <div className="relative w-full md:w-[350px] lg:mt-[211px]">
+            <div className="aspect-390/582 md:aspect-350/522 relative bg-gray-100 overflow-hidden">
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${getAssetPath(rightImage)})` }}
@@ -66,7 +66,7 @@ export default function TrendSection({
             </div>
             {/* Title overlapping image - multiline */}
             <div className="relative z-10 -mt-[20px] text-center">
-              <h2 className="font-display text-[40px] leading-[60px] text-[#dccdbf] whitespace-pre-line">
+              <h2 className="font-display text-[40px] leading-[60px] text-primary whitespace-pre-line">
                 {rightTitle}
               </h2>
             </div>

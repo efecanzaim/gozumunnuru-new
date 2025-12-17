@@ -137,27 +137,27 @@ export default function StorySection({ title, mainText, subText, linkText, linkH
         </svg>
       </div>
 
-      {/* Main content area - 700px height as per Figma */}
-      <div className="relative z-10 pt-[145px] pb-[185px]">
-        <div className="container mx-auto px-8">
+      {/* Main content area - responsive padding */}
+      <div className="relative z-10 pt-[36px] pb-0 md:pt-[145px] md:pb-[185px]">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="text-center">
             {/* Decorative title - Buljirya 40px */}
-            <h2 className="font-display text-[40px] leading-[80px] text-[#2f3237]">
+            <h2 className="font-display text-[40px] leading-[80px] text-[#2f3237] whitespace-pre-line">
               {title}
             </h2>
             
-            {/* Main paragraph - Bw Modelica Light 30px, max-width 950px */}
-            <p className="text-[30px] leading-[40px] font-light text-[#2f3237] max-w-[950px] mx-auto mt-[10px]">
+            {/* Main paragraph - 20px mobile, 30px desktop */}
+            <p className="text-[20px] leading-[30px] md:text-[30px] md:leading-[40px] font-light text-[#2f3237] max-w-[390px] md:max-w-[950px] mx-auto mt-[10px]">
               {mainText}
             </p>
             
-            {/* Sub paragraph - Bw Modelica Light 15px, max-width 710px */}
-            <p className="text-[15px] leading-[20px] font-light text-[#2f3237] max-w-[710px] mx-auto mt-[50px]">
+            {/* Sub paragraph - Bw Modelica Light 15px */}
+            <p className="text-[15px] leading-[20px] font-light text-[#2f3237] max-w-[388px] md:max-w-[710px] mx-auto mt-[30px] md:mt-[50px]">
               {subText}
             </p>
             
             {/* Link - Bw Modelica Bold 15px */}
-            <div className="mt-[40px]">
+            <div className="mt-[30px] md:mt-[40px] mb-[60px] md:mb-0">
               <Link
                 href={linkHref}
                 className="text-[15px] leading-[30px] font-bold text-[#2f3237] link-underline inline-block"
@@ -168,10 +168,19 @@ export default function StorySection({ title, mainText, subText, linkText, linkH
           </div>
         </div>
       </div>
-
     </section>
-    {/* Wave Separator at bottom - outside section to overflow to next section */}
-    <div className="relative -mt-[133px] flex justify-center pointer-events-none z-50">
+    {/* Wave Separator - Mobile: outside section, overflowing down */}
+    <div className="md:hidden relative mt-[-50px] flex justify-center pointer-events-none z-50">
+      <img
+        src={getAssetPath("/images/dalga.svg")}
+        alt=""
+        width="440"
+        height="267"
+        className="w-full max-w-[440px]"
+      />
+    </div>
+    {/* Wave Separator at bottom - Desktop only, outside section */}
+    <div className="hidden md:flex relative -mt-[133px] justify-center pointer-events-none z-50">
       <img
         src={getAssetPath("/images/dalga.svg")}
         alt=""

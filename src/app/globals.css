@@ -40,11 +40,11 @@ html {
 
 /* Custom Button Styles */
 .btn-primary {
-  @apply bg-[#dccdbf] text-[#2f3237] px-8 py-4 text-sm tracking-wide transition-all duration-300 hover:bg-[#c9b9a8];
+  @apply bg-primary text-dark px-8 py-4 text-sm tracking-wide transition-all duration-300 hover:bg-[#c9b9a8];
 }
 
 .btn-dark {
-  @apply bg-[#2f3237] text-[#efece9] px-8 py-4 text-sm tracking-wide transition-all duration-300 hover:bg-[#3d4147];
+  @apply bg-dark text-light px-8 py-4 text-sm tracking-wide transition-all duration-300 hover:bg-[#3d4147];
 }
 
 .btn-outline {
@@ -69,4 +69,14 @@ html {
 
 .link-underline:hover::after {
   width: 100%;
+}
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

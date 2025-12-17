@@ -39,7 +39,7 @@ export default function TopBanner({ text, visible, topLinks }: TopBannerProps) {
   if (!visible) return null;
 
   return (
-    <div className="bg-primary py-3">
+    <div className="hidden lg:block bg-primary py-3">
       <div className="container mx-auto px-8 relative">
         <div className="flex items-center justify-between">
           {/* Left - Links */}
