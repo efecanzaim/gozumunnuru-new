@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
+import { Instagram } from "lucide-react";
 
 interface TopBannerProps {
   text: string;
@@ -55,29 +56,44 @@ export default function TopBanner({ text, visible, topLinks }: TopBannerProps) {
             ))}
           </div>
 
-          {/* Right - Language Dropdown */}
-          <div className="hidden lg:flex items-center gap-4 relative z-200" ref={dropdownRef}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(!isOpen);
-              }}
-              className="text-[11px] font-medium text-[#2f3237] hover:opacity-70 transition-opacity flex items-center gap-1 cursor-pointer"
+          {/* Right - Instagram Icon and Language Dropdown */}
+          <div className="hidden lg:flex items-center gap-4 relative z-200">
+            {/* Instagram Icon */}
+            <Link
+              href="https://www.instagram.com/gozumunnuruantalya"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#2f3237] hover:opacity-70 transition-opacity"
             >
-              {selectedLang}
-              <svg
-                className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              <Instagram 
+                size={18} 
+                strokeWidth={1.5}
+              />
+            </Link>
+            
+            {/* Language Dropdown */}
+            <div ref={dropdownRef} className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen(!isOpen);
+                }}
+                className="text-[11px] font-medium text-[#2f3237] hover:opacity-70 transition-opacity flex items-center gap-1 cursor-pointer"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+                {selectedLang}
+                <svg
+                  className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
 
-            {/* Dropdown Menu */}
-            {isOpen && (
-              <div className="absolute top-full right-0 mt-2 bg-white border border-light shadow-lg min-w-[120px] z-200">
+              {/* Dropdown Menu */}
+              {isOpen && (
+                <div className="absolute top-full right-0 mt-2 bg-white border border-light shadow-lg min-w-[120px] z-200">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
@@ -101,8 +117,9 @@ export default function TopBanner({ text, visible, topLinks }: TopBannerProps) {
                     {lang.name}
                   </button>
                 ))}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

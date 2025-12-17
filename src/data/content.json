@@ -7,7 +7,6 @@
     "logo": "/images/logo.png",
     "logoAlt": "Gözümün Nuru",
     "topLinks": [
-      { "text": "Sipariş Takip", "href": "/siparis-takip" },
       { "text": "Hakkımızda", "href": "/hakkimizda" },
       { "text": "Blog", "href": "/blog" }
     ],

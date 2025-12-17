@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useCallback, useMemo, useRef } from "react";
 import { getAssetPath } from "@/utils/paths";
+import { Instagram } from "lucide-react";
 
 interface SubMenuItem {
   text: string;
@@ -422,15 +423,28 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
 
           {/* Bottom Links */}
           <div className="mt-auto text-center">
-            <Link href="/siparis-takip" className="block py-3 text-[15px] font-medium text-[#2f3237]" onClick={() => setMobileMenuOpen(false)}>
-              Sipariş Takip
-            </Link>
             <Link href="/hakkimizda" className="block py-3 text-[15px] font-medium text-[#2f3237]" onClick={() => setMobileMenuOpen(false)}>
               Hakkımızda
             </Link>
             <Link href="/blog" className="block py-3 text-[15px] font-medium text-[#2f3237]" onClick={() => setMobileMenuOpen(false)}>
               Blog
             </Link>
+            
+            {/* Instagram Icon */}
+            <div className="mt-6 flex justify-center">
+              <Link
+                href="https://www.instagram.com/gozumunnuruantalya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-70"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Instagram 
+                  size={24} 
+                  style={{ filter: primaryColorFilter }}
+                />
+              </Link>
+            </div>
             
             {/* Han Logo at bottom */}
             <div className="mt-10">
