@@ -122,11 +122,6 @@ export default function TopBanner({ text, visible, topLinks }: TopBannerProps) {
             </div>
           </div>
         </div>
-
-        {/* Center - Announcement Text - Absolutely centered */}
-        <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-[13px] font-medium text-[#2f3237] tracking-wide pointer-events-none z-0">
-          {text}
-        </p>
       </div>
     </div>
   );

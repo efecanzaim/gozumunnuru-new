@@ -7,7 +7,6 @@ import StorySection from "@/components/StorySection";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import CategoryCards from "@/components/CategoryCards";
 import PromoSections from "@/components/PromoSections";
-import InvestmentSection from "@/components/InvestmentSection";
 import Footer from "@/components/Footer";
 import content from "@/data/content.json";
 
@@ -64,15 +63,6 @@ export default function Home() {
 
       {/* Promo Sections */}
       <PromoSections sections={content.promoSections} />
-
-      {/* Investment Section */}
-      <InvestmentSection
-        title={content.investmentSection.title}
-        image={content.investmentSection.image}
-        description={content.investmentSection.description}
-        ctaText={content.investmentSection.ctaText}
-        link={content.investmentSection.link}
-      />
 
       {/* Footer */}
       <Footer

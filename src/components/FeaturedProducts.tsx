@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { getAssetPath } from "@/utils/paths";
 
 interface Product {
@@ -31,15 +30,15 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
         {/* Mobile Layout */}
         <div className="block md:hidden">
           {/* Banner 1 */}
-          <div className="w-full aspect-390/324 relative bg-gray-100 mb-6">
+          <div className="w-full aspect-390/324 relative bg-gray-100 mb-6 pointer-events-none">
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center pointer-events-none"
               style={{ backgroundImage: `url(${getAssetPath('/images/products/featured-large-1.jpg')})` }}
             />
           </div>
 
           {/* Product 1 */}
-          <Link href={products[0]?.link || '#'} className="block mb-6">
+          <div className="block mb-6 pointer-events-none">
             <div className="w-[290px] mx-auto aspect-290/435 relative bg-gray-100">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -52,18 +51,18 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <p className="text-[10px] leading-[20px] font-bold text-[#2f3237]">
               {products[0]?.category}
             </p>
-          </Link>
+          </div>
 
           {/* Banner 2 */}
-          <div className="w-full aspect-390/324 relative bg-gray-100 mb-6">
+          <div className="w-full aspect-390/324 relative bg-gray-100 mb-6 pointer-events-none">
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center pointer-events-none"
               style={{ backgroundImage: `url(${getAssetPath('/images/products/featured-large-2.jpg')})` }}
             />
           </div>
 
           {/* Product 2 */}
-          <Link href={products[1]?.link || '#'} className="block">
+          <div className="block pointer-events-none">
             <div className="w-[290px] mx-auto aspect-290/435 relative bg-gray-100">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -76,22 +75,22 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <p className="text-[10px] leading-[20px] font-bold text-[#2f3237]">
               {products[1]?.category}
             </p>
-          </Link>
+          </div>
         </div>
 
         {/* Desktop Layout */}
         {/* Top Row: Büyük sol (710) + Küçük orta (350) + Küçük sağ (350) */}
         <div className="hidden md:flex gap-[10px] mb-[50px]">
           {/* Büyük sol görsel - 710x590 */}
-          <div className="w-[710px] h-[590px] relative bg-gray-100 shrink-0">
+          <div className="w-[710px] h-[590px] relative bg-gray-100 shrink-0 pointer-events-none">
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center pointer-events-none"
               style={{ backgroundImage: `url(${getAssetPath('/images/products/featured-large-1.jpg')})` }}
             />
           </div>
 
           {/* Küçük orta ürün - 350x525 + text */}
-          <Link href={products[0]?.link || '#'} className="w-[350px] shrink-0">
+          <div className="w-[350px] shrink-0 pointer-events-none">
             <div className="w-[350px] h-[525px] relative bg-gray-100">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -104,10 +103,10 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <p className="text-[10px] leading-[20px] font-bold text-[#2f3237]">
               {products[0]?.category}
             </p>
-          </Link>
+          </div>
 
           {/* Küçük sağ ürün - 350x525 + text */}
-          <Link href={products[1]?.link || '#'} className="w-[350px] shrink-0">
+          <div className="w-[350px] shrink-0 pointer-events-none">
             <div className="w-[350px] h-[525px] relative bg-gray-100">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -120,13 +119,13 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <p className="text-[10px] leading-[20px] font-bold text-[#2f3237]">
               {products[1]?.category}
             </p>
-          </Link>
+          </div>
         </div>
 
         {/* Bottom Row: Küçük sol (350) + Küçük orta (350) + Büyük sağ (710) */}
         <div className="hidden md:flex gap-[10px]">
           {/* Küçük sol ürün - 350x525 + text */}
-          <Link href={products[2]?.link || '#'} className="w-[350px] shrink-0">
+          <div className="w-[350px] shrink-0 pointer-events-none">
             <div className="w-[350px] h-[525px] relative bg-gray-100">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -139,10 +138,10 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <p className="text-[10px] leading-[20px] font-bold text-[#2f3237]">
               {products[2]?.category}
             </p>
-          </Link>
+          </div>
 
           {/* Küçük orta ürün - 350x525 + text */}
-          <Link href={products[3]?.link || '#'} className="w-[350px] shrink-0">
+          <div className="w-[350px] shrink-0 pointer-events-none">
             <div className="w-[350px] h-[525px] relative bg-gray-100">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -155,12 +154,12 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <p className="text-[10px] leading-[20px] font-bold text-[#2f3237]">
               {products[3]?.category}
             </p>
-          </Link>
+          </div>
 
           {/* Büyük sağ görsel - 710x590 */}
-          <div className="w-[710px] h-[590px] relative bg-gray-100 shrink-0">
+          <div className="w-[710px] h-[590px] relative bg-gray-100 shrink-0 pointer-events-none">
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center pointer-events-none"
               style={{ backgroundImage: `url(${getAssetPath('/images/products/featured-large-2.jpg')})` }}
             />
           </div>

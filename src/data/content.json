@@ -14,8 +14,7 @@
       { "text": "MÜCEVHER", "href": "/mucevher" },
       { "text": "KOLEKSİYON", "href": "/koleksiyon" },
       { "text": "ÖZEL TASARIM", "href": "/ozel-tasarim" },
-      { "text": "HEDİYE", "href": "/hediye" },
-      { "text": "YATIRIM", "href": "/yatirim" }
+      { "text": "HEDİYE", "href": "/hediye" }
     ]
   },
   "hero": {
@@ -57,8 +56,8 @@
     "rightTitle": "senin\nhikayen",
     "leftCategory": "PIRLANTA SETLER",
     "rightCategory": "PIRLANTA BİLEKLİK",
-    "leftLink": "/koleksiyon/pirlanta-setler",
-    "rightLink": "/koleksiyon/pirlanta-bileklik"
+    "leftLink": "/mucevher",
+    "rightLink": "/koleksiyon"
   },
   "parallaxSection": {
     "backgroundImage": "/images/parallax-bg.jpg"
@@ -127,7 +126,7 @@
       "title": "GÖZ ALICI TAKILAR",
       "description": "Yeni sezon pırlanta\ntasarımları ile stilini aydınlat.",
       "ctaText": "ÜRÜNLERİ İNCELE",
-      "link": "/koleksiyon/goz-alici-takilar"
+      "link": "/koleksiyon"
     },
     {
       "id": 2,
@@ -135,7 +134,7 @@
       "title": "YENİ GELENLER",
       "description": "Atölyemizden çıkan en yeni\ntasarımları ilk sen keşfet.",
       "ctaText": "ÜRÜNLERİ İNCELE",
-      "link": "/koleksiyon/yeni-gelenler"
+      "link": "/ozel-tasarim"
     }
   ],
   "investmentSection": {
@@ -152,8 +151,7 @@
       { "text": "MÜCEVHER", "href": "/mucevher" },
       { "text": "KOLEKSİYON", "href": "/koleksiyon" },
       { "text": "ÖZEL TASARIM", "href": "/ozel-tasarim" },
-      { "text": "HEDİYE", "href": "/hediye" },
-      { "text": "YATIRIM", "href": "/yatirim" }
+      { "text": "HEDİYE", "href": "/hediye" }
     ],
     "copyright": "© 2025 Gözümün Nuru, Tüm Hakları Saklıdır"
   }

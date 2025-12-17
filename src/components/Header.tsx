@@ -60,16 +60,6 @@ const megaMenuData: Record<string, { items: SubMenuItem[]; image: string }> = {
     ],
     image: "/images/parallax-bg.jpg"
   },
-  "YATIRIM": {
-    items: [
-      { text: "Yatırımlık Altın", href: "/yatirim/yatirimlik-altin" },
-      { text: "Gram Altın", href: "/yatirim/gram-altin" },
-      { text: "Çeyrek Altın", href: "/yatirim/ceyrek-altin" },
-      { text: "Yarım Altın", href: "/yatirim/yarim-altin" },
-      { text: "Tam Altın", href: "/yatirim/tam-altin" },
-    ],
-    image: "/images/investment.jpg"
-  },
 };
 
 // Menu keys for iteration
