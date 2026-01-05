@@ -3,14 +3,19 @@
 import Link from "next/link";
 import Image from "next/image";
 
+interface FooterSection {
+  title: string;
+  links: { text: string; href: string }[];
+}
+
 interface FooterProps {
   logo: string;
   slogan: string;
-  nav: { text: string; href: string }[];
+  sections: FooterSection[];
   copyright: string;
 }
 
-export default function Footer({ logo, slogan, nav, copyright }: FooterProps) {
+export default function Footer({ logo, slogan, sections, copyright }: FooterProps) {
   // Diamond data based on Figma coordinates - extended for full width
   const diamondRows = [
     { size: 53, y: 0, xOffset: 0, count: 20, xGap: 150.3 },
@@ -94,18 +99,28 @@ export default function Footer({ logo, slogan, nav, copyright }: FooterProps) {
           </p>
         </div>
 
-        {/* Navigation - Vertical on mobile, Horizontal on desktop */}
-          <nav className="flex flex-col md:flex-row items-center justify-center gap-[25px] md:gap-[32px] mt-[60px] md:mt-[105px]">
-          {nav.map((item, index) => (
-            <Link
-              key={index}
-              href={item.href}
-                className="text-[13px] leading-[16px] font-medium text-[#2f3237] hover:opacity-70 transition-opacity"
-            >
-              {item.text}
-            </Link>
-          ))}
-        </nav>
+        {/* Navigation Sections - Grid layout */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-[60px] md:mt-[105px] max-w-[1000px] mx-auto">
+            {sections.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="text-center md:text-left">
+                <h4 className="text-[14px] font-bold text-[#2f3237] mb-4 tracking-wide">
+                  {section.title}
+                </h4>
+                <ul className="space-y-2">
+                  {section.links.map((link, linkIndex) => (
+                    <li key={linkIndex}>
+                      <Link
+                        href={link.href}
+                        className="text-[13px] leading-[16px] font-light text-[#2f3237] hover:opacity-70 transition-opacity"
+                      >
+                        {link.text}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
 
         {/* Copyright */}
           <div className="text-center mt-[40px] md:mt-[56px]">

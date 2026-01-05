@@ -68,7 +68,7 @@ export default function Home() {
       <Footer
         logo={content.footer.logo}
         slogan={content.footer.slogan}
-        nav={content.footer.nav}
+        sections={content.footer.sections}
         copyright={content.footer.copyright}
       />
     </main>

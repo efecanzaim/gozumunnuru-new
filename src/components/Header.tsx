@@ -19,14 +19,17 @@ interface HeaderProps {
 }
 
 // Mega menu verileri
-const megaMenuData: Record<string, { items: SubMenuItem[]; image: string }> = {
+const megaMenuData: Record<string, { items: SubMenuItem[]; image: string; specialLayout?: boolean; mainTitle?: string }> = {
   "KOLEKSİYON": {
     items: [
-      { text: "Klasikler", href: "/koleksiyon/klasikler" },
-      { text: "Atölye", href: "/koleksiyon/atolye" },
-      { text: "Yeni Nesil", href: "/koleksiyon/yeni-nesil" },
+      { text: "Kolye", href: "/koleksiyon/kolye" },
+      { text: "Bileklik", href: "/koleksiyon/bileklik" },
+      { text: "Küpe", href: "/koleksiyon/kupe" },
+      { text: "Yüzük", href: "/koleksiyon/yuzuk" },
     ],
-    image: "/images/hero-bg.jpg"
+    image: "/images/hero-bg.jpg",
+    specialLayout: true,
+    mainTitle: "gözümün nuru"
   },
   "MÜCEVHER": {
     items: [
@@ -34,20 +37,11 @@ const megaMenuData: Record<string, { items: SubMenuItem[]; image: string }> = {
       { text: "Özel Üretim Pırlanta", href: "/mucevher/ozel-uretim-pirlanta" },
       { text: "Klasik Altın", href: "/mucevher/klasik-altin" },
       { text: "Özgün Tasarım", href: "/mucevher/ozgun-tasarim" },
-      { text: "Preloved", href: "/mucevher/preloved" },
+      { text: "Preloved", href: "/preloved" },
     ],
     image: "/images/trend-left.jpg"
   },
-  "ÖZEL TASARIM": {
-    items: [
-      { text: "Bize Tasarlatın", href: "/ozel-tasarim/bize-tasarlatin" },
-      { text: "Kendin Yarat", href: "/ozel-tasarim/kendin-yarat" },
-      { text: "Nişan-Evlilik", href: "/ozel-tasarim/nisan-evlilik" },
-      { text: "Kişiye Özel Hediye", href: "/ozel-tasarim/kisiye-ozel-hediye" },
-    ],
-    image: "/images/trend-right.jpg"
-  },
-  "HEDİYE": {
+    "HEDİYE": {
     items: [
       { text: "Özel Günler", href: "/hediye/ozel-gunler" },
       { text: "Doğum Günü", href: "/hediye/dogum-gunu" },
@@ -59,6 +53,14 @@ const megaMenuData: Record<string, { items: SubMenuItem[]; image: string }> = {
       { text: "Aksesuar", href: "/hediye/aksesuar" },
     ],
     image: "/images/parallax-bg.jpg"
+  },
+  "ERKEKLERE ÖZEL": {
+    items: [
+      { text: "Tesbih", href: "/erkeklere-ozel/tesbih" },
+      { text: "Bileklik", href: "/erkeklere-ozel/bileklik" },
+      { text: "Yüzük", href: "/erkeklere-ozel/yuzuk" },
+    ],
+    image: "/images/hero-bg.jpg"
   },
 };
 
@@ -82,11 +84,14 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
     }
   }, []);
 
-  // Handle menu enter - immediate
+  // Handle menu enter - immediate, only if menu has submenu
   const handleMenuEnter = useCallback((menuText: string) => {
-    clearCloseTimeout();
-    setActiveMenu(menuText);
-    setIsMenuAreaHovered(true);
+    // Only open mega menu if this menu item has submenu data
+    if (megaMenuData[menuText]) {
+      clearCloseTimeout();
+      setActiveMenu(menuText);
+      setIsMenuAreaHovered(true);
+    }
   }, [clearCloseTimeout]);
 
   // Handle menu area enter (mega menu itself)
@@ -258,31 +263,86 @@ export default function Header({ logo, logoAlt, mainNav, isHero = false }: Heade
           <div className="flex gap-16">
             {/* Left - Menu Items - All menus rendered, visibility controlled */}
             <div className="flex-1 relative min-h-[320px]">
-              {menuKeys.map((menuKey) => (
-                <div
-                  key={menuKey}
-                  className={`absolute inset-0 grid grid-cols-2 gap-x-8 gap-y-2 content-start transition-all duration-300 ease-out ${
-                    activeMenu === menuKey 
-                      ? 'opacity-100 visible translate-x-0' 
-                      : 'opacity-0 invisible translate-x-4 pointer-events-none'
-                  }`}
-                >
-                  {megaMenuData[menuKey].items.map((subItem, idx) => (
-                    <Link
-                      key={idx}
-                      href={subItem.href}
-                      className="text-[20px] leading-[40px] font-light text-[#2f3237] hover:opacity-70 transition-all duration-150"
-                      style={{ 
-                        transitionDelay: activeMenu === menuKey ? `${idx * 30}ms` : '0ms',
-                        opacity: activeMenu === menuKey ? 1 : 0,
-                        transform: activeMenu === menuKey ? 'translateY(0)' : 'translateY(10px)'
-                      }}
+              {menuKeys.map((menuKey) => {
+                const menuData = megaMenuData[menuKey];
+                const isActive = activeMenu === menuKey;
+
+                // Koleksiyon için özel layout
+                if (menuData.specialLayout) {
+                  return (
+                    <div
+                      key={menuKey}
+                      className={`absolute inset-0 flex gap-16 transition-all duration-300 ease-out ${
+                        isActive
+                          ? 'opacity-100 visible translate-x-0'
+                          : 'opacity-0 invisible translate-x-4 pointer-events-none'
+                      }`}
                     >
-                      {subItem.text}
-                    </Link>
-                  ))}
-                </div>
-              ))}
+                      {/* Sol taraf - Ana başlık */}
+                      <div className="flex items-start">
+                        <Link
+                          href="/koleksiyon/gozumun-nuru"
+                          className="font-display text-[24px] text-[#2f3237] leading-tight transition-all duration-300 ease-out hover:opacity-70"
+                          style={{
+                            opacity: isActive ? 1 : 0,
+                            transform: isActive ? 'translateY(0)' : 'translateY(10px)'
+                          }}
+                        >
+                          {menuData.mainTitle}
+                        </Link>
+                      </div>
+
+                      {/* Sağ taraf - Kategoriler alt alta */}
+                      <div className="flex flex-col gap-2">
+                        {menuData.items.map((subItem, idx) => (
+                          <Link
+                            key={idx}
+                            href={subItem.href}
+                            className="text-[20px] leading-[40px] font-light text-[#2f3237] hover:opacity-70"
+                            style={{
+                              opacity: isActive ? 1 : 0,
+                              transform: isActive ? 'translateY(0)' : 'translateY(10px)',
+                              transitionProperty: 'opacity, transform',
+                              transitionDuration: '300ms',
+                              transitionTimingFunction: 'ease-out',
+                              transitionDelay: isActive ? `${(idx + 1) * 30}ms` : '0ms'
+                            }}
+                          >
+                            {subItem.text}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Diğer menüler için standart layout
+                return (
+                  <div
+                    key={menuKey}
+                    className={`absolute inset-0 grid grid-cols-2 gap-x-8 gap-y-2 content-start transition-all duration-300 ease-out ${
+                      isActive
+                        ? 'opacity-100 visible translate-x-0'
+                        : 'opacity-0 invisible translate-x-4 pointer-events-none'
+                    }`}
+                  >
+                    {menuData.items.map((subItem, idx) => (
+                      <Link
+                        key={idx}
+                        href={subItem.href}
+                        className="text-[20px] leading-[40px] font-light text-[#2f3237] hover:opacity-70 transition-all duration-150"
+                        style={{
+                          transitionDelay: isActive ? `${idx * 30}ms` : '0ms',
+                          opacity: isActive ? 1 : 0,
+                          transform: isActive ? 'translateY(0)' : 'translateY(10px)'
+                        }}
+                      >
+                        {subItem.text}
+                      </Link>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Right - Image - All images rendered, visibility controlled */}

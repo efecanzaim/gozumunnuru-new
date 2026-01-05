@@ -13,8 +13,10 @@
     "mainNav": [
       { "text": "MÜCEVHER", "href": "/mucevher" },
       { "text": "KOLEKSİYON", "href": "/koleksiyon" },
-      { "text": "ÖZEL TASARIM", "href": "/ozel-tasarim" },
-      { "text": "HEDİYE", "href": "/hediye" }
+      { "text": "SANA ÖZEL", "href": "/sana-ozel" },
+      { "text": "HEDİYE", "href": "/hediye" },
+      { "text": "ERKEKLERE ÖZEL", "href": "/erkeklere-ozel" },
+      { "text": "PRELOVED", "href": "/preloved" }
     ]
   },
   "hero": {
@@ -147,11 +149,36 @@
   "footer": {
     "logo": "/images/1818-logo.svg",
     "slogan": "Işıltının Anlama Dönüştüğü Yer.",
-    "nav": [
-      { "text": "MÜCEVHER", "href": "/mucevher" },
-      { "text": "KOLEKSİYON", "href": "/koleksiyon" },
-      { "text": "ÖZEL TASARIM", "href": "/ozel-tasarim" },
-      { "text": "HEDİYE", "href": "/hediye" }
+    "sections": [
+      {
+        "title": "Şirketimiz",
+        "links": [
+          { "text": "Hakkımızda", "href": "/hakkimizda" },
+          { "text": "İletişim", "href": "/iletisim" }
+        ]
+      },
+      {
+        "title": "Gözümün Nuru",
+        "links": [
+          { "text": "Kolye", "href": "/koleksiyon/kolye" },
+          { "text": "Bileklik", "href": "/koleksiyon/bileklik" },
+          { "text": "Küpe", "href": "/koleksiyon/kupe" },
+          { "text": "Yüzük", "href": "/koleksiyon/yuzuk" }
+        ]
+      },
+      {
+        "title": "Müşteri Hizmetleri",
+        "links": [
+          { "text": "Bakım ve Garanti", "href": "/bakim-garanti" }
+        ]
+      },
+      {
+        "title": "Yasal",
+        "links": [
+          { "text": "Çerez Politikası", "href": "/cerez-politikasi" },
+          { "text": "Gizlilik Politikası", "href": "/gizlilik-politikasi" }
+        ]
+      }
     ],
     "copyright": "© 2025 Gözümün Nuru, Tüm Hakları Saklıdır"
   }

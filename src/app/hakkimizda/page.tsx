@@ -56,7 +56,7 @@ Kaliteli malzemeler ve usta işçilikle ürettiğimiz mücevherler, sadece bir a
       <Footer
         logo={content.footer.logo}
         slogan={content.footer.slogan}
-        nav={content.footer.nav}
+        sections={content.footer.sections}
         copyright={content.footer.copyright}
       />
     </>
