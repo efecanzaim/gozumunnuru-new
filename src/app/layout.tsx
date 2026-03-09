@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { PreviewProvider } from "@/contexts/PreviewContext";
+import { LocaleProvider } from "@/i18n/LocaleContext";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter"
+  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700"]
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"]
 });
 
 export const metadata: Metadata = {
-  title: "Gözümün Nuru | Pırlanta & Mücevher",
-  description: "Işıltının Anlama Dönüştüğü Yer. Her pırlantada aşkın zarafetini taşır.",
+  title: "Han Kuyumculuk | Pırlanta & Mücevher",
+  description: "Seninle güzelleşir her şey… Her pırlantada aşkın zarafetini taşır.",
   keywords: "pırlanta, mücevher, altın, yüzük, kolye, bileklik, küpe, özel tasarım",
 };
 
@@ -19,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  
+
   return (
     <html lang="tr">
       <head>
@@ -35,8 +44,12 @@ export default function RootLayout({
           `
         }} />
       </head>
-      <body className={`${inter.variable} antialiased`}>
-        {children}
+      <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+        <LocaleProvider locale="tr">
+          <PreviewProvider locale="tr">
+            {children}
+          </PreviewProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

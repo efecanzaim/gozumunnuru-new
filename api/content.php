@@ -1,0 +1,581 @@
+<?php
+/**
+ * Tüm İçerik API
+ * Frontend için tüm site içeriğini tek seferde döndürür
+ * Yeni veritabanı şemasına göre güncellenmiştir
+ * 
+ * Çoklu dil desteği:
+ * ?locale=tr (varsayılan), ?locale=en, ?locale=ru
+ */
+
+require_once 'config.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    jsonResponse(['error' => 'Sadece GET metodu kabul edilir'], 405);
+}
+
+// Locale parametresini al (varsayılan: tr)
+$validLocales = ['tr', 'en', 'ru'];
+$locale = isset($_GET['locale']) ? strtolower($_GET['locale']) : 'tr';
+if (!in_array($locale, $validLocales)) {
+    $locale = 'tr';
+}
+
+/**
+ * Dile göre alan değerini döndürür
+ * Önce {field}_{locale} aranır, yoksa {field} döner
+ */
+function getLocalizedValue($row, $field, $locale) {
+    if ($locale === 'tr') {
+        return $row[$field] ?? '';
+    }
+    
+    $localizedField = $field . '_' . $locale;
+    
+    // Lokalize alan dolu ise onu döndür
+    if (isset($row[$localizedField]) && $row[$localizedField] !== null && $row[$localizedField] !== '') {
+        return $row[$localizedField];
+    }
+    
+    // Yoksa varsayılan (TR) değeri döndür
+    return $row[$field] ?? '';
+}
+
+$db = getDB();
+
+try {
+    // Hata raporlamayı aç (development için)
+    error_reporting(E_ALL);
+    ini_set('display_errors', 0); // JSON response için kapalı tut
+    // =====================================================
+    // HEADER AYARLARI
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM header_settings LIMIT 1');
+    $headerSettings = $stmt->fetch() ?: [];
+    
+    // =====================================================
+    // ÜST BANNER
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM top_banner WHERE is_visible = 1 LIMIT 1');
+    $topBanner = $stmt->fetch();
+    
+    // =====================================================
+    // HERO SLIDES
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM hero_slides WHERE is_active = 1 ORDER BY sort_order ASC');
+    $heroSlides = $stmt->fetchAll();
+    
+    // =====================================================
+    // TREND BÖLÜMÜ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_trend_section WHERE is_active = 1 LIMIT 1');
+    $trendSection = $stmt->fetch();
+    
+    // =====================================================
+    // PARALLAX BÖLÜMÜ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_parallax_section WHERE is_active = 1 LIMIT 1');
+    $parallaxSection = $stmt->fetch();
+    
+    // =====================================================
+    // HİKAYE BÖLÜMÜ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_story_section WHERE is_active = 1 LIMIT 1');
+    $storySection = $stmt->fetch();
+    
+    // =====================================================
+    // ÖNE ÇIKAN ÜRÜNLER BÖLÜMÜ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_featured_section WHERE is_active = 1 LIMIT 1');
+    $featuredSection = $stmt->fetch();
+    
+    // =====================================================
+    // ÖZEL TASARIM BÖLÜMÜ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_special_section WHERE is_active = 1 LIMIT 1');
+    $specialSection = $stmt->fetch();
+    
+    // =====================================================
+    // ANA SAYFA KARTLARI
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_cards WHERE is_active = 1 ORDER BY section_type, sort_order ASC');
+    $allCards = $stmt->fetchAll();
+    
+    $topCards = [];
+    $bottomCards = [];
+    foreach ($allCards as $card) {
+        $formattedCard = [
+            'id' => (int)($card['id'] ?? 0),
+            'title' => getLocalizedValue($card, 'title', $locale),
+            'subtitle' => getLocalizedValue($card, 'subtitle', $locale),
+            'image' => $card['image'] ?? '',
+            'imagePosition' => $card['image_position'] ?? '50% 50%',
+            'imageScale' => (float)($card['image_scale'] ?? 1),
+            'link' => $card['link'] ?? '',
+            'buttonText' => getLocalizedValue($card, 'button_text', $locale)
+        ];
+        if ($card['section_type'] === 'top') {
+            $topCards[] = $formattedCard;
+        } else {
+            $bottomCards[] = $formattedCard;
+        }
+    }
+    
+    // =====================================================
+    // BLOG BÖLÜMÜ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM homepage_blog_section WHERE is_active = 1 LIMIT 1');
+    $blogSection = $stmt->fetch();
+    
+    // =====================================================
+    // FOOTER AYARLARI
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM footer_settings LIMIT 1');
+    $footerSettings = $stmt->fetch() ?: [];
+    
+    // Footer sütunları ve linkleri
+    $stmt = $db->query('SELECT * FROM footer_columns WHERE is_active = 1 ORDER BY sort_order ASC');
+    $footerColumns = $stmt->fetchAll();
+    
+    $stmt = $db->query('SELECT * FROM footer_links WHERE is_active = 1 ORDER BY column_id, sort_order ASC');
+    $footerLinks = $stmt->fetchAll();
+    
+    // Linkleri sütunlara göre grupla
+    $linksByColumn = [];
+    foreach ($footerLinks as $link) {
+        $colId = $link['column_id'];
+        if (!isset($linksByColumn[$colId])) {
+            $linksByColumn[$colId] = [];
+        }
+        $linksByColumn[$colId][] = [
+            'text' => getLocalizedValue($link, 'text', $locale),
+            'href' => $link['url']
+        ];
+    }
+    
+    // Sütunları formatla
+    $formattedColumns = [];
+    foreach ($footerColumns as $column) {
+        $formattedColumns[] = [
+            'title' => getLocalizedValue($column, 'title', $locale),
+            'links' => $linksByColumn[$column['id']] ?? []
+        ];
+    }
+    
+    // =====================================================
+    // İLETİŞİM BİLGİLERİ
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM contact_info LIMIT 1');
+    $contactInfo = $stmt->fetch() ?: [];
+    
+    // =====================================================
+    // SOSYAL MEDYA
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM social_media WHERE is_active = 1 ORDER BY sort_order ASC');
+    $socialMedia = $stmt->fetchAll();
+    
+    $socialLinks = [];
+    foreach ($socialMedia as $social) {
+        $socialLinks[$social['platform']] = $social['url'];
+    }
+    
+    // =====================================================
+    // ÇOKLU DİL SÜTUN KONTROLÜ
+    // =====================================================
+    $hasMultilangProducts = false;
+    $hasMultilangFeatured = false;
+    try {
+        $checkCol = $db->query("SHOW COLUMNS FROM products LIKE 'name_en'");
+        $hasMultilangProducts = $checkCol->rowCount() > 0;
+    } catch (Exception $e) {
+        $hasMultilangProducts = false;
+    }
+    try {
+        $checkCol = $db->query("SHOW COLUMNS FROM featured_products LIKE 'display_name_en'");
+        $hasMultilangFeatured = $checkCol->rowCount() > 0;
+    } catch (Exception $e) {
+        $hasMultilangFeatured = false;
+    }
+
+    $productMultilangCols = $hasMultilangProducts
+        ? ', p.name_en, p.name_ru, p.subtitle_en, p.subtitle_ru'
+        : '';
+    $productMultilangColsDirect = $hasMultilangProducts
+        ? ', name_en, name_ru, subtitle_en, subtitle_ru'
+        : '';
+
+    // =====================================================
+    // KATEGORİLER
+    // =====================================================
+    $stmt = $db->query('SELECT * FROM categories WHERE is_active = 1 ORDER BY parent_type, sort_order ASC');
+    $categories = $stmt->fetchAll();
+    
+    // =====================================================
+    // ÜRÜNLER - category_products tablosundan al (varsa)
+    // =====================================================
+    $productsByCategory = [];
+    
+    // Önce category_products tablosunun var olup olmadığını kontrol et
+    $tableExists = false;
+    try {
+        $checkStmt = $db->query("SHOW TABLES LIKE 'category_products'");
+        $tableExists = $checkStmt->rowCount() > 0;
+    } catch (Exception $e) {
+        error_log('Table check error: ' . $e->getMessage());
+    }
+    
+    if ($tableExists) {
+        // category_products tablosu varsa, oradan al
+        try {
+            $stmt = $db->query("
+                SELECT cp.category_id, cp.product_id, cp.sort_order,
+                       p.id, p.slug, p.main_image, p.name, p.subtitle, p.is_active, p.image_position, p.image_scale{$productMultilangCols}
+                FROM category_products cp
+                INNER JOIN products p ON cp.product_id = p.id
+                WHERE cp.is_active = 1 AND p.is_active = 1
+                ORDER BY cp.category_id, CASE WHEN cp.sort_order = 0 THEN 999999 ELSE cp.sort_order END ASC, p.name ASC
+            ");
+            $categoryProducts = $stmt->fetchAll();
+            
+            // Ürünleri kategorilere göre grupla
+            foreach ($categoryProducts as $cp) {
+                $catId = $cp['category_id'];
+                if (!isset($productsByCategory[$catId])) {
+                    $productsByCategory[$catId] = [];
+                }
+                $productsByCategory[$catId][] = [
+                    'id' => (int)$cp['id'],
+                    'slug' => $cp['slug'] ?? '',
+                    'main_image' => $cp['main_image'] ?? '',
+                    'name' => $cp['name'] ?? '',
+                    'name_en' => $cp['name_en'] ?? '',
+                    'name_ru' => $cp['name_ru'] ?? '',
+                    'subtitle' => $cp['subtitle'] ?? '',
+                    'subtitle_en' => $cp['subtitle_en'] ?? '',
+                    'subtitle_ru' => $cp['subtitle_ru'] ?? '',
+                    'sort_order' => (int)$cp['sort_order'],
+                    'image_position' => $cp['image_position'] ?? '50% 50%',
+                    'image_scale' => (float)($cp['image_scale'] ?? 1),
+                ];
+            }
+        } catch (PDOException $e) {
+            error_log('category_products query error: ' . $e->getMessage());
+            // Hata olursa fallback'e geç
+            $tableExists = false;
+        }
+    }
+    
+    // Eğer category_products tablosu yoksa veya boşsa, fallback olarak products tablosundan al
+    if (!$tableExists || empty($productsByCategory)) {
+        try {
+            $stmt = $db->query("
+                SELECT id, slug, main_image, name, subtitle, category_id, sort_order, image_position, image_scale{$productMultilangColsDirect}
+                FROM products
+                WHERE is_active = 1 AND category_id IS NOT NULL
+                ORDER BY category_id, CASE WHEN sort_order = 0 THEN 999999 ELSE sort_order END ASC, name ASC
+            ");
+            $allProducts = $stmt->fetchAll();
+            
+            foreach ($allProducts as $p) {
+                $catId = $p['category_id'];
+                if ($catId) {
+                    if (!isset($productsByCategory[$catId])) {
+                        $productsByCategory[$catId] = [];
+                    }
+                    $productsByCategory[$catId][] = [
+                        'id' => (int)$p['id'],
+                        'slug' => $p['slug'] ?? '',
+                        'main_image' => $p['main_image'] ?? '',
+                        'name' => $p['name'] ?? '',
+                        'name_en' => $p['name_en'] ?? '',
+                        'name_ru' => $p['name_ru'] ?? '',
+                        'subtitle' => $p['subtitle'] ?? '',
+                        'subtitle_en' => $p['subtitle_en'] ?? '',
+                        'subtitle_ru' => $p['subtitle_ru'] ?? '',
+                        'sort_order' => (int)$p['sort_order'],
+                        'image_position' => $p['image_position'] ?? '50% 50%',
+                        'image_scale' => (float)($p['image_scale'] ?? 1),
+                    ];
+                }
+            }
+        } catch (PDOException $e) {
+            error_log('Fallback products query error: ' . $e->getMessage());
+            $productsByCategory = [];
+        }
+    }
+    
+    // Kategorileri formatla ve ürünlerini ekle
+    $categoriesByType = [];
+    foreach ($categories as $category) {
+        $catProducts = $productsByCategory[$category['id']] ?? [];
+        $formattedProducts = array_map(function($p) use ($locale) {
+            return [
+                'id' => (int)$p['id'],
+                'slug' => $p['slug'] ?? '',
+                'image' => $p['main_image'] ?? '',
+                'name' => getLocalizedValue($p, 'name', $locale),
+                'subtitle' => getLocalizedValue($p, 'subtitle', $locale),
+                'link' => '/urun/' . ($p['slug'] ?? ''),
+                'imagePosition' => $p['image_position'] ?? '50% 50%',
+                'imageScale' => (float)($p['image_scale'] ?? 1),
+            ];
+        }, $catProducts);
+        
+        $formattedCategory = [
+            'id' => (int)$category['id'],
+            'slug' => $category['slug'] ?? '',
+            'name' => getLocalizedValue($category, 'name', $locale),
+            'heroImage' => $category['hero_image'] ?? '',
+            'heroTitle' => getLocalizedValue($category, 'hero_title', $locale),
+            'heroSubtitle' => getLocalizedValue($category, 'hero_subtitle', $locale),
+            'heroDescription' => getLocalizedValue($category, 'hero_description', $locale),
+            'categoryTitle' => getLocalizedValue($category, 'list_title', $locale),
+            'content' => $category['content'] ?? null,
+            'products' => $formattedProducts
+        ];
+        
+        $parentType = $category['parent_type'];
+        if (!isset($categoriesByType[$parentType])) {
+            $categoriesByType[$parentType] = [];
+        }
+        $categoriesByType[$parentType][$category['slug']] = $formattedCategory;
+    }
+    
+    // =====================================================
+    // ÖNE ÇIKAN ÜRÜNLER (Ana sayfa için)
+    // =====================================================
+    $featuredMultilangCols = '';
+    if ($hasMultilangProducts) {
+        $featuredMultilangCols .= ', p.name_en as product_name_en, p.name_ru as product_name_ru';
+        $featuredMultilangCols .= ', p.subtitle_en as product_subtitle_en, p.subtitle_ru as product_subtitle_ru';
+    }
+    if ($hasMultilangFeatured) {
+        $featuredMultilangCols .= ', fp.display_name_en, fp.display_name_ru, fp.display_category_en, fp.display_category_ru';
+    }
+    $stmt = $db->query("
+        SELECT fp.id, fp.product_id, fp.display_name, fp.display_category, fp.sort_order, fp.is_active,
+               p.main_image, p.slug as product_slug,
+               p.name as product_name, p.subtitle as product_subtitle{$featuredMultilangCols}
+        FROM featured_products fp
+        JOIN products p ON fp.product_id = p.id
+        WHERE fp.is_active = 1 AND p.is_active = 1
+        ORDER BY fp.sort_order ASC
+    ");
+    $featuredProducts = $stmt->fetchAll();
+    
+    $formattedFeaturedProducts = array_map(function($fp) use ($locale) {
+        // Önce display_name'in locale versiyonunu, yoksa product_name'in locale versiyonunu al
+        $displayName = getLocalizedValue($fp, 'display_name', $locale);
+        if (empty($displayName)) {
+            $displayName = getLocalizedValue($fp, 'product_name', $locale);
+        }
+        return [
+            'id' => (int)($fp['id'] ?? 0),
+            'image' => $fp['main_image'] ?? '',
+            'name' => $displayName,
+            'category' => getLocalizedValue($fp, 'display_category', $locale),
+            'link' => '/urun/' . ($fp['product_slug'] ?? '')
+        ];
+    }, $featuredProducts);
+    
+    // =====================================================
+    // TÜM VERİYİ BİRLEŞTİR
+    // =====================================================
+    $content = [
+        // Top Banner
+        'topBanner' => [
+            'text' => getLocalizedValue($topBanner ?: [], 'text', $locale),
+            'link' => $topBanner['link'] ?? '',
+            'visible' => (bool)($topBanner['is_visible'] ?? false)
+        ],
+        
+        // Header
+        'header' => [
+            'logo' => $headerSettings['logo_image'] ?? '/images/logo.png',
+            'logoAlt' => $headerSettings['logo_alt'] ?? 'Han Kuyumculuk',
+            'topLinks' => [
+                ['text' => 'Hakkımızda', 'href' => '/hakkimizda'],
+                ['text' => 'Blog', 'href' => '/blog']
+            ],
+            'mainNav' => [
+                ['text' => 'MÜCEVHER', 'href' => '/mucevher'],
+                ['text' => 'KOLEKSİYON', 'href' => '/koleksiyon'],
+                ['text' => 'ÖZEL TASARIM', 'href' => '/ozel-tasarim'],
+                ['text' => 'HEDİYE', 'href' => '/hediye']
+            ]
+        ],
+        
+        // Hero Slider
+        'hero' => [
+            'slides' => array_map(function($slide) use ($locale) {
+                return [
+                    'id' => (int)$slide['id'],
+                    'backgroundImage' => $slide['background_media'] ?? '',
+                    'mediaType' => $slide['media_type'] ?? 'image',
+                    'title' => getLocalizedValue($slide, 'title', $locale),
+                    'subtitle' => getLocalizedValue($slide, 'subtitle', $locale),
+                    'ctaText' => getLocalizedValue($slide, 'button_text', $locale),
+                    'ctaLink' => $slide['button_link'] ?? '',
+                    'imagePosition' => $slide['image_position'] ?? '50% 50%',
+                    'imageScale' => isset($slide['image_scale']) ? (float)$slide['image_scale'] : 1.0,
+                ];
+            }, $heroSlides)
+        ],
+        
+        // Trend Section
+        'trendSection' => $trendSection ? [
+            'leftImage' => $trendSection['left_image'] ?? '',
+            'leftTitle' => getLocalizedValue($trendSection, 'left_title', $locale),
+            'leftLink' => $trendSection['left_link'] ?? '',
+            'leftTitleLink' => $trendSection['left_link'] ?? '',
+            'leftImagePosition' => $trendSection['left_image_position'] ?? '50% 50%',
+            'leftImageScale' => (float)($trendSection['left_image_scale'] ?? 1),
+            'rightImage' => $trendSection['right_image'] ?? '',
+            'rightTitle' => getLocalizedValue($trendSection, 'right_title', $locale),
+            'rightLink' => $trendSection['right_link'] ?? '',
+            'rightTitleLink' => $trendSection['right_link'] ?? '',
+            'rightImagePosition' => $trendSection['right_image_position'] ?? '50% 50%',
+            'rightImageScale' => (float)($trendSection['right_image_scale'] ?? 1),
+        ] : null,
+        
+        // Parallax Section
+        'parallaxSection' => $parallaxSection ? [
+            'backgroundImage' => $parallaxSection['background_image'] ?? '/images/parallax-bg.jpg'
+        ] : ['backgroundImage' => '/images/parallax-bg.jpg'],
+        
+        // Story Section
+        'storySection' => $storySection ? [
+            'title' => getLocalizedValue($storySection, 'title', $locale),
+            'mainText' => getLocalizedValue($storySection, 'main_text', $locale),
+            'subText' => getLocalizedValue($storySection, 'sub_text', $locale),
+            'linkText' => getLocalizedValue($storySection, 'link_text', $locale),
+            'linkUrl' => $storySection['link_url'] ?? ''
+        ] : null,
+        
+        // Featured Products Section
+        'featuredProductsSection' => $featuredSection ? [
+            'titlePart1' => getLocalizedValue($featuredSection, 'title_part1', $locale) ?: 'SİZE ÖZEL',
+            'titlePart2' => getLocalizedValue($featuredSection, 'title_part2', $locale) ?: 'ÜRÜNLERİMİZ',
+            'bannerImage1' => $featuredSection['banner_image1'] ?? '/images/products/featured-large-1.jpg',
+            'bannerImage2' => $featuredSection['banner_image2'] ?? '/images/products/featured-large-2.jpg'
+        ] : [
+            'titlePart1' => 'SİZE ÖZEL',
+            'titlePart2' => 'ÜRÜNLERİMİZ',
+            'bannerImage1' => '/images/products/featured-large-1.jpg',
+            'bannerImage2' => '/images/products/featured-large-2.jpg'
+        ],
+        
+        // Featured Products (Ana sayfada gösterilen ürünler)
+        'featuredProducts' => $formattedFeaturedProducts,
+        
+        // Special Design Section
+        'specialDesignSection' => [
+            'titlePart1' => getLocalizedValue($specialSection ?: [], 'title_part1', $locale) ?: 'KENDİNİZİ',
+            'titlePart2' => getLocalizedValue($specialSection ?: [], 'title_part2', $locale) ?: 'ÖZEL HİSSEDİN',
+            'topCards' => $topCards,
+            'bottomCards' => $bottomCards
+        ],
+        
+        // Blog Section
+        'blogSection' => $blogSection ? [
+            'title' => getLocalizedValue($blogSection, 'title', $locale),
+            'subtitle' => getLocalizedValue($blogSection, 'subtitle', $locale),
+            'description' => getLocalizedValue($blogSection, 'description', $locale),
+            'additionalText' => getLocalizedValue($blogSection, 'additional_text', $locale),
+            'image' => $blogSection['image'] ?? '',
+            'linkText' => getLocalizedValue($blogSection, 'link_text', $locale),
+            'linkUrl' => $blogSection['link_url'] ?? ''
+        ] : null,
+        
+        // Footer
+        'footer' => [
+            'logo' => $footerSettings['logo_image'] ?? '/images/1818-logo.svg',
+            'slogan' => getLocalizedValue($footerSettings, 'slogan', $locale) ?: 'Seninle güzelleşir her şey…',
+            'copyright' => getLocalizedValue($footerSettings, 'copyright_text', $locale) ?: '© 2025 Han Kuyumculuk, Tüm Hakları Saklıdır',
+            'columns' => $formattedColumns,
+            'socialLinks' => $socialLinks
+        ],
+        
+        // Contact
+        'contact' => [
+            'address' => getLocalizedValue($contactInfo, 'address', $locale),
+            'phone' => $contactInfo['phone'] ?? '',
+            'email' => $contactInfo['email'] ?? '',
+            'workingHours' => getLocalizedValue($contactInfo, 'working_hours', $locale),
+            'mapEmbed' => $contactInfo['map_embed'] ?? '',
+            'instagram1' => $contactInfo['instagram1'] ?? '',
+            'instagram1Url' => $contactInfo['instagram1_url'] ?? '',
+            'instagram2' => $contactInfo['instagram2'] ?? '',
+            'instagram2Url' => $contactInfo['instagram2_url'] ?? ''
+        ],
+        
+        // Kategoriler (content.json formatında)
+        'mucevherCategories' => $categoriesByType['mucevher'] ?? [],
+        'koleksiyonCategories' => $categoriesByType['koleksiyon'] ?? [],
+        'hediyeCategories' => $categoriesByType['hediye'] ?? [],
+        'erkekCategories' => $categoriesByType['erkek'] ?? [],
+        'gozumunNuruCategory' => $categoriesByType['koleksiyon']['gozumun-nuru'] ?? null,
+        'prelovedCategory' => $categoriesByType['preloved']['preloved'] ?? null,
+        'yatirimCategory' => $categoriesByType['yatirim']['yatirim'] ?? null,
+        'ozelTasarimCategory' => $categoriesByType['ozel_tasarim']['ozel-tasarim'] ?? null,
+
+        // Hediye ve Hakkımızda sayfaları (pages tablosundan)
+        'hediyePage' => (function() use ($db) {
+            try {
+                $stmt = $db->prepare('SELECT * FROM pages WHERE slug = ? AND is_active = 1 LIMIT 1');
+                $stmt->execute(['hediye']);
+                $p = $stmt->fetch();
+                if (!$p) return null;
+                $sections = [];
+                if (!empty($p['content'])) {
+                    $sections = json_decode($p['content'], true) ?: [];
+                }
+                return [
+                    'heroImage' => $p['hero_image'] ?? '',
+                    'heroImagePosition' => $p['hero_image_position'] ?? '50% 50%',
+                    'heroImageScale' => isset($p['hero_image_scale']) ? (float)$p['hero_image_scale'] : 1.0,
+                    'sections' => $sections,
+                ];
+            } catch (Exception $e) {
+                return null;
+            }
+        })(),
+
+        // Menü Görselleri
+        'menuImages' => (function() use ($db) {
+            try {
+                $stmt = $db->prepare("SELECT setting_value FROM general_settings WHERE setting_key = 'menu_images'");
+                $stmt->execute();
+                $row = $stmt->fetch();
+                return $row ? json_decode($row['setting_value'], true) : null;
+            } catch (Exception $e) {
+                return null;
+            }
+        })(),
+
+        // Meta bilgiler
+        '_meta' => [
+            'generatedAt' => date('c'),
+            'totalProducts' => array_sum(array_map('count', $productsByCategory)),
+            'totalCategories' => count($categories)
+        ]
+    ];
+    
+    jsonResponse($content);
+    
+} catch (PDOException $e) {
+    error_log('Database error in content.php: ' . $e->getMessage());
+    error_log('SQL Error Code: ' . $e->getCode());
+    jsonResponse([
+        'error' => 'Veritabanı hatası',
+        'message' => $e->getMessage(),
+        'code' => $e->getCode()
+    ], 500);
+} catch (Exception $e) {
+    error_log('General error in content.php: ' . $e->getMessage());
+    jsonResponse([
+        'error' => 'İçerik yüklenirken hata oluştu',
+        'message' => $e->getMessage()
+    ], 500);
+}
+?>

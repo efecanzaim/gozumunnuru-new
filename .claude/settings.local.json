@@ -1,7 +1,30 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(git push:*)",
+      "mcp__figma-dev-mode-mcp-server__get_design_context",
+      "mcp__figma-dev-mode-mcp-server__get_screenshot",
+      "mcp__figma-dev-mode-mcp-server__get_metadata",
+      "Bash(npm run build:*)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''src\\\\app'' -Recurse -Filter ''*.tsx'' | ForEach-Object { \\(Get-Content $_FullName -Raw\\) -replace ''topLinks=\\\\{content\\\\.header\\\\.topLinks\\\\}\\\\s*\\\\n?\\\\s*'', '''' | Set-Content $_FullName -NoNewline }\")",
+      "Bash(node -e:*)",
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(git -C \"c:/Users/demas/Desktop/hankuyumculuk\" log --oneline --all -- src/components/ProductListingPage.tsx)",
+      "Bash(git -C \"C:/Users/demas/Desktop/hankuyumculuk\" log --oneline -- src/components/ProductListingPage.tsx)",
+      "Bash(git -C \"C:/Users/demas/Desktop/hankuyumculuk\" show HEAD~1:src/components/ProductListingPage.tsx)",
+      "Bash(git -C \"C:/Users/demas/Desktop/hankuyumculuk\" log --oneline -10)",
+      "Bash(git -C \"C:/Users/demas/Desktop/hankuyumculuk\" show 830a110:src/components/ProductListingPage.tsx)",
+      "Bash(git -C \"C:/Users/demas/Desktop/hankuyumculuk\" show HEAD:src/components/ProductListingPage.tsx)",
+      "Bash(git -C \"C:/Users/demas/Desktop/hankuyumculuk\" show HEAD:src/components/pages/ProductCategoryPageContent.tsx)",
+      "Bash(grep -rn \"objectPosition\\\\|imagePosition\" src/components/*.tsx)",
+      "Bash(grep -rn \"imagePosition\\\\|heroImagePosition\" src/components/pages/*.tsx)",
+      "Bash(grep -n \"splitImagePosition\\\\|darkBgImagePosition\" src/components/pages/*.tsx)",
+      "Bash(git -C \"c:/Users/demas/Desktop/gozumunnuru-new\" remote -v)"
     ]
   }
 }
